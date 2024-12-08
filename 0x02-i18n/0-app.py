@@ -1,22 +1,20 @@
 #!/usr/bin/env python3
-
-""" Basic Flask app.
 """
-
+Flask app
+"""
 from flask import Flask, render_template
 
 
-# Initialize the Flask application
 app = Flask(__name__)
 
-# Define the route for the root URL
-@app.route('/')
-def index():
-    """Render the index page."""
+
+@app.route('/', strict_slashes=False)
+def index() -> str:
+    """
+    Handles / route
+    """
     return render_template('0-index.html')
 
 
-# Main entry point of the application
-if __name__ == '__main__':
-    # Run the Flask app in debug mode
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(port="5000", host="0.0.0.0", debug=True)

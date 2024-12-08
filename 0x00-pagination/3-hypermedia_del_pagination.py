@@ -40,23 +40,35 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        # Check if index is within the range of dataset
-        assert index in range(len(self.dataset()))
-        index_dict = self.indexed_dataset()
+        """
+        Takes 2 integer arguments and returns a dictionary with
+        the following key-value pairs:
+            index: index of the first item in the current page
+            next_index: index of the first item in the next page
+            page_size: the current page size
+            data: actual page of the dataset
+        Args:
+            index(int): first required index
+            page_size(int): required number of records per page
+        """
+        dataset = self.indexed_dataset()
+        data_length = len(dataset)
+        assert 0 <= index < data_length
+        response = {}
+        data = []
+        response['index'] = index
+        for i in range(page_size):
+            while True:
+                curr = dataset.get(index)
+                index += 1
+                if curr is not None:
+                    break
+            data.append(curr)
 
-        # Check if index is 0 and page_size is 10
-        if index == 0 and page_size == 10:
-            # Get the first 10 elements from index_dict
-            data = index_dict[0:10]
-        elif index is None:  # Check if index is None
-            index = index  # Assign index to itself (redundant statement?)
-        # Get the data at the given index from index_dict,
-        # or None if index is not present
-        data = [index_dict[index] if index in index_dict else None]
-
-        return {
-            "index": index,  # Return the index
-            "next_index": index + 1,  # Return the next index
-            "page_size": page_size,  # Return the page size
-            "data": data  # Return the data
-        }
+        response['data'] = data
+        response['page_size'] = len(data)
+        if dataset.get(index):
+            response['next_index'] = index
+        else:
+            response['next_index'] = None
+        return response

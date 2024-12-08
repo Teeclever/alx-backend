@@ -1,40 +1,40 @@
 #!/usr/bin/env python3
-
-""" BasicCache module that inherits from BaseCaching and is a caching system
-Put method should be overrided and implement logic to assign
-key and value in cache dictionary.
-Get method should be overrided and implement logic to
-return value linked to key.
+""" BaseCaching module
 """
-
-
-BaseCaching = __import__('base_caching').BaseCaching
+from base_caching import BaseCaching
 
 
 class BasicCache(BaseCaching):
-    """ BasicCache class that inherits from BaseCaching
-    No limits on number of items it can store.
+    """
+    Defines a class for caching information in key-value pairs
+    Methods:
+        put(key, item) - store a key-value pair
+        get(key) - retrieve the value associated with a key
     """
 
     def __init__(self):
-        """Initialize BasicCache
         """
-        super().__init__()
+        Initialize the class using the parent class __init__ method
+        """
+        BaseCaching.__init__(self)
 
     def put(self, key, item):
-        """ Override put method and assign item value to the key in cache_data
-        dictionary.
-        If either key or item is None, do nothing.
         """
-        if key is None or item is None:  # check if key and item are not None
-            return
-        self.cache_data[key] = item
+        Store a key-value pair
+        Args:
+            Key
+            Item
+        """
+        if key is None or item is None:
+            pass
+        else:
+            self.cache_data[key] = item
 
     def get(self, key):
-        """ Override get method and return value linked to key in cache_data
-        dictionary.
-        If key is None or key does not exist in cache_data, return None.
         """
-        if key is None or key not in self.cache_data:
-            return None
-        return self.cache_data.get(key)  # return value associated with key
+        Return value linked to key.
+        If key is None or doesn't exist, return None
+        """
+        if key is not None and key in self.cache_data.keys():
+            return self.cache_data[key]
+        return None
